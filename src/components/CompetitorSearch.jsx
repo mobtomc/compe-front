@@ -13,19 +13,17 @@ function CompetitorSearch() {
       setError("Please enter both business type and location.");
       return;
     }
-
+  
     setLoading(true);
     setError(null);
-    setCompetitors([]); // Clear previous results before new search
-
+    setCompetitors([]); 
+  
     try {
       console.log("Searching competitors for:", businessType, location);
-
       const response = await searchCompetitors(businessType, location);
-
-      if (response.data && response.data.results) {
-        setCompetitors(response.data.results);
-        console.log("Competitors data:", response.data.results);
+      if (response && response.data && response.data.length > 0) {
+        setCompetitors(response.data);
+        console.log("Competitors data:", response.data);
       } else {
         setError("No results found.");
       }
@@ -36,6 +34,7 @@ function CompetitorSearch() {
       setLoading(false);
     }
   };
+  
 
   return (
     <div className="flex flex-col items-center justify-center w-full">
@@ -71,25 +70,29 @@ function CompetitorSearch() {
         </div>
       </div>
 
-      {/* Display Competitor Results */}
-      <div className="flex flex-wrap gap-4 w-[90%] justify-center py-8">
-        {competitors.map((competitor, index) => (
-          <div
-            key={index}
-            className="bg-gradient-to-r from-gray-700 to-gray-800 rounded-lg shadow-lg p-6 w-[20rem] transform hover:scale-105 transition-transform duration-200 ease-out"
-          >
-            <h3 className="text-xl font-bold text-white mb-2">
-              {competitor.name || "Business Name"}
-            </h3>
-            <p className="text-sm text-gray-400">
-              {competitor.address || "Address not available"}
-            </p>
-            <p className="text-sm text-gray-400">
-              Rating: {competitor.rating || "N/A"}
-            </p>
-          </div>
-        ))}
-      </div>
+     {/* Display Competitor Results */}
+<div className="flex flex-wrap gap-4 w-[90%] justify-center py-8">
+  {competitors.map((competitor, index) => (
+    <div
+      key={index}
+      className="bg-gradient-to-r from-gray-700 to-gray-800 rounded-lg shadow-lg p-6 w-[20rem] transform hover:scale-105 transition-transform duration-200 ease-out"
+    >
+      <h3 className="text-xl font-bold text-white mb-2">
+        {competitor.name || "Business Name"}
+      </h3>
+      <p className="text-sm text-gray-400">
+        {competitor.full_address || "Address not available"}
+      </p>
+      <p className="text-sm text-gray-400">
+        Rating: {competitor.rating || "N/A"}
+      </p>
+      <p className="text-sm text-gray-400">
+        Reviews: {competitor.review_count || "N/A"}
+      </p>
+    </div>
+  ))}
+</div>
+
     </div>
   );
 }

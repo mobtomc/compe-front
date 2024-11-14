@@ -9,8 +9,6 @@ export const analyzeData = (data) =>
 export const getSuggestions = (data) =>
   axios.post("http://127.0.0.1:8000/suggestions/", { data });
 
-// const RAPIDAPI_KEY = import.meta.env.VITE_RAPIDAPI_KEY;
-
 export const searchCompetitors = async (businessType, location) => {
   const options = {
     method: "POST",
@@ -28,15 +26,12 @@ export const searchCompetitors = async (businessType, location) => {
     },
   };
 
-  async function fetchData() {
-    try {
-      const response = await axios.request(options);
-      //   this is working
-      console.log(response?.data);
-      res.json(response?.data);
-    } catch (error) {
-      console.error(error);
-    }
+  try {
+    const response = await axios.request(options);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error; 
   }
-  fetchData();
 };
+
